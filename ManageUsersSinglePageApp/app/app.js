@@ -23,8 +23,10 @@ app.config(function ($routeProvider) {
 // Controllers
 app.controller('ListUserController', ['$scope', '$http', function ($scope, $http) {
     $http.get('/User/ListAllUsers')
-        .then(function successCallback(response) {            
-            $scope.users = response.data;
+        .then(function successCallback(response) {   
+            if (response.data.success === true) {
+                $scope.users = response.data.result;
+            }
         });
 }]);
 
@@ -48,7 +50,9 @@ app.controller('EditUserController', ['$scope', '$http', '$routeParams', '$windo
 
     $http.get('/User/GetById?id=' + id)
         .then(function successCallback(response) {
-            $scope.user = response.data;
+            if (response.data.success === true) {
+                $scope.user = response.data.result;
+            }
         });
 
     $scope.submit = function () {
@@ -77,12 +81,12 @@ app.controller('EditUserController', ['$scope', '$http', '$routeParams', '$windo
 //}]);
 
 function checkValidData($scope, $window, response) {
-    if (response.data.constructor === Array && response.data[0].Value == "Error") {
+    if (response.data.success === false) {
         $scope.validationErrors = [];
 
-        var error = response.data[1].Value;
+        var error = response.data.errors;
         for (var key in error) {
-            $scope.validationErrors.push(error[key].Value[0]);
+            $scope.validationErrors.push(error[key][0]);
         }
     }
     else {

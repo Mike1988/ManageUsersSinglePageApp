@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ManageUsersSinglePageApp.Extensions
@@ -13,10 +10,15 @@ namespace ManageUsersSinglePageApp.Extensions
         {
             if (!modelState.IsValid)
             {
-                return modelState.ToDictionary(kvp => kvp.Key,
-                    kvp => kvp.Value.Errors
-                                    .Select(e => e.ErrorMessage).ToArray())
-                                    .Where(m => m.Value.Count() > 0);
+                var errors = new Hashtable();
+                foreach (var pair in modelState)
+                {
+                    if (pair.Value.Errors.Count > 0)
+                    {
+                        errors[pair.Key] = pair.Value.Errors.Select(error => error.ErrorMessage).ToList();
+                    }
+                }
+                return errors;
             }
             return null;
         }

@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ManageUsersCoreApp.Models;
 using ManageUsersSinglePageApp.Extensions;
 
@@ -18,14 +17,14 @@ namespace ManageUsersCoreApp.Controllers
         public JsonResult ListAllUsers()
         {
             var users = _userRepository.FindAll();
-            return Json(users, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, result = users }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult GetById(int id)
         {
             var user = _userRepository.FindById(id);
-            return Json(user, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, result = user }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -34,14 +33,12 @@ namespace ManageUsersCoreApp.Controllers
             if (ModelState.IsValid)
             {
                 var newUser = _userRepository.Add(user);
-                return Json(newUser, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, data = newUser }, JsonRequestBehavior.AllowGet);
             }
-
-            dynamic response = new ExpandoObject();
-            response.Status = "Error";
-            response.Errors = ModelState.Errors();
-
-            return Json(response, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json(new { success = false, errors = ModelState.Errors() });
+            }
         }
 
         [HttpPost]
@@ -55,12 +52,10 @@ namespace ManageUsersCoreApp.Controllers
                 originalUser.Address = user.Address;
                 return Json(originalUser, JsonRequestBehavior.AllowGet);
             }
-
-            dynamic response = new ExpandoObject();
-            response.Status = "Error";
-            response.Errors = ModelState.Errors();
-
-            return Json(response, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json(new { success = false, errors = ModelState.Errors() });
+            }
         }
     }
 }
