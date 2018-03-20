@@ -17,21 +17,21 @@
                 dest: "Scripts/angular",
                 flatten: true
             }
+        },
+
+        uglify: {
+            my_target: {
+                files: { 'app/app-ugly.min.js': ['app/app.js'] }
+            }
+        },
+
+        watch: {
+            scripts: {
+                files: ['app/app.js'],
+                tasks: ['uglify']
+            }
         }
-
-        //uglify: {
-        //    my_target: {
-        //        files: { 'wwwroot/js/app.js': ['Scripts/app.js', 'Scripts/**/*.js'] }
-        //    }
-        //},
-
-        //watch: {
-        //    scripts: {
-        //        files: ['Scripts/**/*.js'],
-        //        tasks: ['uglify']
-        //    }
-        //}
     });
 
-    grunt.registerTask('default', ['copy']);
+    grunt.registerTask('default', ['copy', 'uglify', 'watch']);
 };

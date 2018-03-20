@@ -1,111 +1,117 @@
-﻿// App Config
-var app = angular.module('myApp', ['ngRoute']);
+﻿(function () {
+    "use strict";
 
-app.config(function ($routeProvider) {
-    $routeProvider
-        .when('/', {
-            controller: 'ListUserController',
-            templateUrl: 'app/views/user/ListAllUsers.html'
-        })
-        .when('/User/Create', {
-            controller: 'CreateUserController',
-            templateUrl: 'app/views/user/Create.html'
-        })
-        .when('/User/Edit/:id', {
-            controller: 'EditUserController',
-            templateUrl: 'app/views/user/Edit.html'
-        })
-        .otherwise({
-            redirectTo: '/'
-        });
-});
+    // App Config
+    var app = angular.module('myApp', ['ngRoute']).config(config);
 
-// Controllers
-app.controller('ListUserController', ['$scope', '$http', function ($scope, $http) {
-    $http.get('/User/ListAllUsers')
-        .then(function successCallback(response) {   
-            if (response.data.success === true) {
-                $scope.users = response.data.result;
-            }
-        });
+    config.$inject = ['$routeProvider'];
 
-    $scope.search = function (user) {
-        if ($scope.searchText == null) {
-            $scope.showNoResults = false;
-            return true;
-        }
-        else {
-            if (user.Name.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1) {
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                controller: 'ListUserController',
+                templateUrl: 'app/views/user/ListAllUsers.html'
+            })
+            .when('/User/Create', {
+                controller: 'CreateUserController',
+                templateUrl: 'app/views/user/Create.html'
+            })
+            .when('/User/Edit/:id', {
+                controller: 'EditUserController',
+                templateUrl: 'app/views/user/Edit.html'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    }
+
+    // Controllers
+    app.controller('ListUserController', ['$scope', '$http', function ($scope, $http) {
+        $http.get('/User/ListAllUsers')
+            .then(function successCallback(response) {
+                if (response.data.success === true) {
+                    $scope.users = response.data.result;
+                }
+            });
+
+        $scope.search = function (user) {
+            if ($scope.searchText == null) {
                 $scope.showNoResults = false;
                 return true;
             }
-            $scope.showNoResults = true;
-        }
-        
-        return false;
-    };  
-}]);
-
-app.controller('CreateUserController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
-    $scope.submit = function () {
-        var user = {
-            "Name": $scope.Name,
-            "Age": $scope.Age,
-            "Address": $scope.Address
-        }
-
-        $http.post('/User/Create', user)
-            .then(function successCallback(response) {
-                checkValidData($scope, $window, response)
-            });        
-    }
-}]);
-
-app.controller('EditUserController', ['$scope', '$http', '$routeParams', '$window', function ($scope, $http, $routeParams, $window) {
-    var id = $routeParams.id;
-
-    $http.get('/User/GetById?id=' + id)
-        .then(function successCallback(response) {
-            if (response.data.success === true) {
-                $scope.user = response.data.result;
+            else {
+                if (user.Name.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1) {
+                    $scope.showNoResults = false;
+                    return true;
+                }
+                $scope.showNoResults = true;
             }
-        });
 
-    $scope.submit = function () {
-        var user = {
-            "Id": $scope.user.Id,
-            "Name": $scope.user.Name,
-            "Age": $scope.user.Age,
-            "Address": $scope.user.Address
+            return false;
+        };
+    }]);
+
+    app.controller('CreateUserController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
+        $scope.submit = function () {
+            var user = {
+                "Name": $scope.Name,
+                "Age": $scope.Age,
+                "Address": $scope.Address
+            }
+
+            $http.post('/User/Create', user)
+                .then(function successCallback(response) {
+                    checkValidData($scope, $window, response)
+                });
         }
+    }]);
 
-        $http.post('http://localhost:57287/User/Edit', user)
+    app.controller('EditUserController', ['$scope', '$http', '$routeParams', '$window', function ($scope, $http, $routeParams, $window) {
+        var id = $routeParams.id;
+
+        $http.get('/User/GetById?id=' + id)
             .then(function successCallback(response) {
-                checkValidData($scope, $window, response)
-        });
-    }
-}]);
+                if (response.data.success === true) {
+                    $scope.user = response.data.result;
+                }
+            });
 
-//app.factory('listUsers', ['$http', function ($http) {
-//    return $http.get('/User/ListAllUsers')
-//        .then(function successCallback(data) {
-//            return data;
-//        });
-//        //.error(function (err) {
-//        //    return err;
-//        //});
-//}]);
+        $scope.submit = function () {
+            var user = {
+                "Id": $scope.user.Id,
+                "Name": $scope.user.Name,
+                "Age": $scope.user.Age,
+                "Address": $scope.user.Address
+            }
 
-function checkValidData($scope, $window, response) {
-    if (response.data.success === false) {
-        $scope.validationErrors = [];
+            $http.post('http://localhost:57287/User/Edit', user)
+                .then(function successCallback(response) {
+                    checkValidData($scope, $window, response)
+                });
+        }
+    }]);
 
-        var error = response.data.errors;
-        for (var key in error) {
-            $scope.validationErrors.push(error[key][0]);
+    //app.factory('listUsers', ['$http', function ($http) {
+    //    return $http.get('/User/ListAllUsers')
+    //        .then(function successCallback(data) {
+    //            return data;
+    //        });
+    //        //.error(function (err) {
+    //        //    return err;
+    //        //});
+    //}]);
+
+    function checkValidData($scope, $window, response) {
+        if (response.data.success === false) {
+            $scope.validationErrors = [];
+
+            var error = response.data.errors;
+            for (var key in error) {
+                $scope.validationErrors.push(error[key][0]);
+            }
+        }
+        else {
+            $window.location.href = '/';
         }
     }
-    else {
-        $window.location.href = '/';
-    }
-}
+})();

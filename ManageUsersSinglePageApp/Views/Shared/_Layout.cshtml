@@ -24,11 +24,11 @@
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             @*<div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                </ul>
-            </div>*@
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                    </ul>
+                </div>*@
         </div>
     </div>
     <div class="container body-content">
@@ -47,6 +47,7 @@
 
     @RenderSection("scripts", required: false)
 
-    <script src="~/app/app.js"></script>
+    @*<script src="~/app/app.js"></script>*@
+    <script src="~/app/app-ugly.min.js"></script>
 </body>
 </html>
