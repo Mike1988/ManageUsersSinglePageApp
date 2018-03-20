@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,22 +13,22 @@ namespace ManageUsersCoreApp.Models
         User Add(User user);
     }
 
-    public class UserRepository : IUserRepository //: DbContext
+    public class UserRepository : IUserRepository
     {
         private List<User> _users = new List<User>();
         private int Id = 1;
 
-
         public UserRepository()
         {
-            _users.Add(new User { Name = "fdsfsd", Age = 10, Address = "fsdfsd", Id = 1 });
+            _users.Add(new User { Name = "Jack Baur", Age = 51, Address = "123 LA Street", Id = Id });
+            Id++;
         }
 
         public User Add(User user)
         {
             if (user == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException("user");
             }
 
             user.Id = Id++;

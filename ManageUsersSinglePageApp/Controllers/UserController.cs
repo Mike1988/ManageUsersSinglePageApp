@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ManageUsersCoreApp.Models;
 
 namespace ManageUsersCoreApp.Controllers
@@ -15,16 +13,10 @@ namespace ManageUsersCoreApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult GetAllUsers()
+        public JsonResult ListAllUsers()
         {
             var users = _userRepository.FindAll();
-            return View(users);
+            return Json(users, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -35,6 +27,13 @@ namespace ManageUsersCoreApp.Controllers
         }
 
         [HttpPost]
+        public JsonResult Create(User user)
+        {
+            var newUser = _userRepository.Add(user);
+            return Json(newUser, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult Edit(User user)
         {
             var originalUser = _userRepository.FindById(user.Id);
@@ -42,27 +41,6 @@ namespace ManageUsersCoreApp.Controllers
             originalUser.Age = user.Age;
             originalUser.Address = user.Address;
             return Json(originalUser, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult ListAllUsers()
-        {
-            var users = _userRepository.FindAll();
-            return Json(users, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Create(User user)
-        {
-            _userRepository.Add(user);
-
-            return RedirectToAction("GetAllUsers");
         }
     }
 }

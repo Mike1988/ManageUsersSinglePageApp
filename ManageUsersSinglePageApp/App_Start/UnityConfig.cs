@@ -51,7 +51,6 @@ namespace ManageUsersSinglePageApp
         {
             var container = new UnityContainer();
 
-
             container.RegisterType<IUserRepository, UserRepository>(new ContainerControlledLifetimeManager());
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
