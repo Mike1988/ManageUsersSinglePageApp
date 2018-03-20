@@ -28,6 +28,19 @@ app.controller('ListUserController', ['$scope', '$http', function ($scope, $http
                 $scope.users = response.data.result;
             }
         });
+
+    $scope.search = function (user) {
+        if ($scope.searchText == null) {
+            return true;
+        }
+        else {
+            if (user.Name.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1) {
+                return true;
+            }
+        }
+
+        return false;
+    };  
 }]);
 
 app.controller('CreateUserController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {

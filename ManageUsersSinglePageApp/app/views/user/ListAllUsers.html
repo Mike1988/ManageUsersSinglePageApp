@@ -2,9 +2,13 @@
     <div ng-controller="ListUserController">
         <h2>All Users</h2>
 
-        <p>            
+        <p>
             <a href="/#!/User/Create">Create New</a>
-        </p>        
+        </p>
+        
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Search by Name" ng-model="searchText" />
+        </div>
 
         <table class="table">
             <tr>
@@ -13,7 +17,7 @@
                 <th>Address</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="user in users">
+            <tr ng-repeat="user in users | filter: search">
                 <td>{{user.Name}}</td>
                 <td>{{user.Age}}</td>
                 <td>{{user.Address}}</td>
