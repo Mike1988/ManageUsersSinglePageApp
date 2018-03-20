@@ -18,6 +18,9 @@ namespace ManageUsersSinglePageApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Register IOC Containers
+            UnityConfig.RegisterComponents();
         }
     }
 }

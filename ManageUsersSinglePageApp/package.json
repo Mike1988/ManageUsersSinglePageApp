@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "name": "manageuserscoreapp",
+  "private": true,
+  "devDependencies": {
+    "grunt": "1.0.2",
+    "grunt-contrib-uglify": "3.3.0",
+    "grunt-contrib-watch": "1.0.0",
+    "grunt-copy": "0.1.0"
+  },
+  "dependencies": {
+    "angular": "1.6.9",
+    "angular-route": "1.6.9"
+  }
+}
