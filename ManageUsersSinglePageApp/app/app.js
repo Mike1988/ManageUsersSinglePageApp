@@ -20,11 +20,10 @@ app.config(function ($routeProvider) {
         });
 });
 
-
 // Controllers
 app.controller('ListUserController', ['$scope', '$http', function ($scope, $http) {
     $http.get('/User/ListAllUsers')
-        .then(function successCallback(response) {
+        .then(function successCallback(response) {            
             $scope.users = response.data;
         });
 }]);
@@ -38,10 +37,9 @@ app.controller('CreateUserController', ['$scope', '$http', '$location', '$window
         }
 
         $http.post('/User/Create', user)
-            .then(function successCallback() {
-                //$location.path('/#!/User/');
-                $window.location.href = '/';
-            });
+            .then(function successCallback(response) {
+                checkValidData($scope, $window, response)
+            });        
     }
 }]);
 
@@ -62,15 +60,14 @@ app.controller('EditUserController', ['$scope', '$http', '$routeParams', '$windo
         }
 
         $http.post('http://localhost:57287/User/Edit', user)
-            .then(function successCallback() {
-                //$location.path('/#!/User/');
-                $window.location.href = '/';                
-            });
+            .then(function successCallback(response) {
+                checkValidData($scope, $window, response)
+        });
     }
 }]);
 
 //app.factory('listUsers', ['$http', function ($http) {
-//    return $http.get('http://localhost:57287/User/ListAllUsers')
+//    return $http.get('/User/ListAllUsers')
 //        .then(function successCallback(data) {
 //            return data;
 //        });
@@ -78,3 +75,17 @@ app.controller('EditUserController', ['$scope', '$http', '$routeParams', '$windo
 //        //    return err;
 //        //});
 //}]);
+
+function checkValidData($scope, $window, response) {
+    if (response.data.constructor === Array && response.data[0].Value == "Error") {
+        $scope.validationErrors = [];
+
+        var error = response.data[1].Value;
+        for (var key in error) {
+            $scope.validationErrors.push(error[key].Value[0]);
+        }
+    }
+    else {
+        $window.location.href = '/';
+    }
+}

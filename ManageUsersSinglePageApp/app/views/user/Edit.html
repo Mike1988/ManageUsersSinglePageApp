@@ -3,6 +3,14 @@
 <form ng-submit="submit()" ng-controller="EditUserController">
     <div class="form-horizontal">
         <hr />
+
+        <div class="alert alert-danger validationErrors" ng-show="validationErrors">
+            <p>The follwoing errors have occured:</p>
+            <ul>
+                <li ng-repeat="error in validationErrors">{{error}}</li>
+            </ul>
+        </div>
+
         <input id="id" name="id" class="hidden" ng-model="user.Id" />
 
         <div class="form-group">

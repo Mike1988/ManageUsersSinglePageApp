@@ -1,5 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Dynamic;
+using System.Web.Mvc;
 using ManageUsersCoreApp.Models;
+using ManageUsersSinglePageApp.Extensions;
 
 namespace ManageUsersCoreApp.Controllers
 {
@@ -29,18 +31,36 @@ namespace ManageUsersCoreApp.Controllers
         [HttpPost]
         public JsonResult Create(User user)
         {
-            var newUser = _userRepository.Add(user);
-            return Json(newUser, JsonRequestBehavior.AllowGet);
+            if (ModelState.IsValid)
+            {
+                var newUser = _userRepository.Add(user);
+                return Json(newUser, JsonRequestBehavior.AllowGet);
+            }
+
+            dynamic response = new ExpandoObject();
+            response.Status = "Error";
+            response.Errors = ModelState.Errors();
+
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult Edit(User user)
         {
-            var originalUser = _userRepository.FindById(user.Id);
-            originalUser.Name = user.Name;
-            originalUser.Age = user.Age;
-            originalUser.Address = user.Address;
-            return Json(originalUser, JsonRequestBehavior.AllowGet);
+            if (ModelState.IsValid)
+            {
+                var originalUser = _userRepository.FindById(user.Id);
+                originalUser.Name = user.Name;
+                originalUser.Age = user.Age;
+                originalUser.Address = user.Address;
+                return Json(originalUser, JsonRequestBehavior.AllowGet);
+            }
+
+            dynamic response = new ExpandoObject();
+            response.Status = "Error";
+            response.Errors = ModelState.Errors();
+
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
     }
 }
