@@ -202,6 +202,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\views\user\Edit.html" />
+    <Content Include="app\views\user\Create.html" />
+    <Content Include="app\views\user\GetAllUsers.html" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -258,8 +261,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\User\Create.cshtml" />
-    <Content Include="Views\User\GetAllUsers.cshtml" />
+    <Content Include="Views\User\Create.html" />
+    <Content Include="Views\User\GetAllUsers.html" />
+    <Content Include="Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,15 +10,13 @@ namespace ManageUsersCoreApp.Models
     {
         List<User> FindAll();
 
+        User FindById(int id);
+
         User Add(User user);
     }
 
     public class UserRepository : IUserRepository //: DbContext
     {
-        //public ApiContext(DbContextOptions<ApiContext> options)
-        //    : base(options)
-        //{   
-        //}
         private List<User> _users = new List<User>();
         private int Id = 1;
 
@@ -43,6 +41,11 @@ namespace ManageUsersCoreApp.Models
         public List<User> FindAll()
         {
             return _users.ToList();
+        }
+
+        public User FindById(int id)
+        {
+            return _users.FirstOrDefault(x => x.Id == id);
         }
     }
 }
