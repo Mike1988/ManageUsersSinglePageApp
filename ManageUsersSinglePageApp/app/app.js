@@ -31,14 +31,17 @@ app.controller('ListUserController', ['$scope', '$http', function ($scope, $http
 
     $scope.search = function (user) {
         if ($scope.searchText == null) {
+            $scope.showNoResults = false;
             return true;
         }
         else {
             if (user.Name.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1) {
+                $scope.showNoResults = false;
                 return true;
             }
+            $scope.showNoResults = true;
         }
-
+        
         return false;
     };  
 }]);

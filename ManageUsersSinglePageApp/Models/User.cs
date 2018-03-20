@@ -4,11 +4,12 @@ namespace ManageUsersCoreApp.Models
 {
     public class User
     {
+        [Key]
         [Required]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(50, ErrorMessage = "The Address must not be longer than 50 characters.")]
+        [MaxLength(50, ErrorMessage = "The Name field must not be longer than 50 characters.")]
         public string Name { get; set; }
 
         [Required]
