@@ -23,9 +23,7 @@ app.config(function ($routeProvider) {
 
 // Controllers
 app.controller('ListUserController', ['$scope', '$http', function ($scope, $http) {
-    $scope.title = 'mike me';
-
-    $http.get('http://localhost:57287/User/ListAllUsers')
+    $http.get('/User/ListAllUsers')
         .then(function successCallback(response) {
             $scope.users = response.data;
         });
@@ -39,7 +37,7 @@ app.controller('CreateUserController', ['$scope', '$http', '$location', '$window
             "Address": $scope.Address
         }
 
-        $http.post('http://localhost:57287/User/Create', user)
+        $http.post('/User/Create', user)
             .then(function successCallback() {
                 //$location.path('/#!/User/');
                 $window.location.href = '/';
@@ -47,10 +45,10 @@ app.controller('CreateUserController', ['$scope', '$http', '$location', '$window
     }
 }]);
 
-app.controller('EditUserController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+app.controller('EditUserController', ['$scope', '$http', '$routeParams', '$window', function ($scope, $http, $routeParams, $window) {
     var id = $routeParams.id;
 
-    $http.get('http://localhost:57287/User/GetById?id=' + id)
+    $http.get('/User/GetById?id=' + id)
         .then(function successCallback(response) {
             $scope.user = response.data;
         });
